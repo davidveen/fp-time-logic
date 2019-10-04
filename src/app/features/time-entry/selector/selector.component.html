@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input matInput 
+         type="time"
+         step="900"
+         [placeholder]="placeholder"
+         [value]="time.format('HH:mm')"
+         (change)="update($event.target.value); $event.stopPropagation()">
+  <mat-hint>{{time.format(DATE_FORMAT)}}</mat-hint>
+</mat-form-field>
