@@ -1,0 +1,16 @@
+<section>
+  <div class="mr-1">
+    <time-entry--selector
+      [time]="startTime"
+      placeholder="start"
+      (timeChange)="setStartTime($event)">
+    </time-entry--selector>
+  </div>
+  <div>
+    <time-entry--selector
+      [time]="endTime"
+      placeholder="end"
+      (timeChange)="setEndTime($event)">
+    </time-entry--selector>
+  </div>
+</section>

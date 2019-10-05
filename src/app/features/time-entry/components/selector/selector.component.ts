@@ -21,7 +21,6 @@ export class SelectorComponent implements OnInit {
   ngOnInit() { }
 
   update(value) {
-    console.log(value);
     const [hours, minutes] = value.split(':');
     this.timeChange.emit(
       this.time.startOf('day')

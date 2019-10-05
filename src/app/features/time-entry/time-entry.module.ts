@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { SelectorComponent } from './selector/selector.component';
 import { RouterModule } from '@angular/router';
-import { TimeEntryView } from './time-entry.view';
+
 import { SharedModule } from 'src/app/shared/shared.module';
+
+import { TimeEntryView } from './views/time-entry.view';
+import { SelectorComponent } from './components/selector/selector.component';
 
 const routes = [
   {
