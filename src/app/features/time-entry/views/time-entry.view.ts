@@ -1,17 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import * as moment from 'moment';
-import { pipe, iif, tap } from 'src/app/shared/fp-utils';
-
-const resetToSameDay = iif(
-  ([endTime, startTime]) => endTime.dayOfYear() !== startTime.dayOfYear(),
-  ([endTime, startTime]) => [endTime.clone().dayOfYear(startTime.dayOfYear()), startTime]
-);
-
-const addDayIfEndBeforeStart = iif(
-  ([endTime, startTime]) => endTime.isSameOrBefore(startTime),
-  ([endTime, startTime]) => [endTime.clone().add(1, 'days'), startTime]
-);
 
 @Component({
   selector: 'app-time-entry',
@@ -30,36 +19,25 @@ export class TimeEntryView implements OnInit {
   ngOnInit() {
     this.startTime = moment()
       .startOf('day')
-      .add(23, 'hours');
+      .add(17, 'hours');
     this.endTime = moment()
       .startOf('day')
-      .add(1, 'days')
-      .add(4, 'hours')
+      .add(17, 'hours')
       .add(30, 'minutes');
-
-    // window['time'] = this.endTime;
   }
 
-  private updateProperty = (property: string) => (value: any) => {
-    this[property] = value;
+  setStartTime(time: moment.Moment) {
+    this.startTime = time;
+    this.setEndTime(this.endTime);
   }
 
-  public setStartTime = (time: moment.Moment) => {
-    return pipe(
-      tap(this.updateProperty('startTime')),
-      _ => this.endTime,
-      tap(this.setEndTime),
-    )(time);
+  setEndTime(time: moment.Moment) {
+    if (time.dayOfYear() > this.startTime.dayOfYear()) {
+      time = time.clone().dayOfYear(this.startTime.dayOfYear());
+    }
+    if (time.isSameOrBefore(this.startTime)) {
+      time = time.clone().add(1, 'days');
+    }
+    this.endTime = time;
   }
-
-  public setEndTime = (time: moment.Moment) => {
-    return pipe(
-      endTime => [endTime, this.startTime],
-      resetToSameDay,
-      addDayIfEndBeforeStart,
-      ([endTime, _]) => endTime,
-      tap(this.updateProperty('endTime')),
-    )(time);
-  }
-
 }
